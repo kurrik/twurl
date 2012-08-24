@@ -1,9 +1,14 @@
 module Twurl
   class RCFile
     FILE = '.twurlrc'
-    @directory ||= ENV['HOME']
     class << self
-      attr_accessor :directory
+      def directory
+        @@directory ||= File.expand_path('~')
+      end
+
+      def directory=(dir)
+        @@directory = dir
+      end
 
       def file_path
         File.join(directory, FILE)
@@ -30,7 +35,7 @@ module Twurl
     end
 
     def save
-      File.open(self.class.file_path, 'w') do |rcfile|
+      File.open(self.class.file_path, File::RDWR|File::CREAT, 0600) do |rcfile|
         rcfile.write data.to_yaml
       end
     end

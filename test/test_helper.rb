@@ -1,7 +1,9 @@
-$:.unshift File.dirname(__FILE__) + '/../lib'
-require 'rubygems'
-require 'simplecov'
-SimpleCov.start
+unless ENV['CI']
+  require 'simplecov'
+  SimpleCov.start do
+    add_filter 'test'
+  end
+end
 require 'twurl'
 require 'minitest/autorun'
 require 'rr'
